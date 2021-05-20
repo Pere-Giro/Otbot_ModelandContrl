@@ -1,0 +1,106 @@
+Duration: 10 seconds
+
+Parameters:
+
+m.I_b = 0.00146;   % Central moment of inertia of the chassis body about axis 3 [kg*m^2]
+m.I_p = 0.00161; % Central moment of inertia of the platform body about axis 3" [kg*m^2]
+m.I_a = 1*1e-6; % Axial moment of inertia of one wheel [kg*m^2]
+m.I_t = 9*1e-7; % Twisting moment of inertia of one wheel [kg*m^2]
+
+m.l_1 = 0.019; % Pivot offset relative to the wheels axis [m]
+m.l_2 = 0.0565; % One half of the wheels separation [m]
+
+m.m_b = 0.518; % Mass of the chassis base [kg]
+m.m_w = 0.010; % Mass of one wheel [kg]
+m.m_p = 0.573; % Mass of the platform [kg]
+
+m.x_G = -0.019; % x coord of the c.o.m. of the chassis body in the chassis frame [m]
+m.y_G = 0; % y coord of the c.o.m. of the chassis body in the chassis frame [m]
+
+m.x_F = 0; % x coord of the c.o.m. of the platform body in the platform frame [m]
+m.y_F = 0; % y coord of the c.o.m. of the platform body in the platform frame [m]
+
+m.r = 0.0195;   % Wheel radius [m]
+
+m.b_frict = [0; 0; 0]*1e-2; % Viscous friction coefficient [kg*m^2*s^-1]
+
+Friction modelled as:
+tau_friction_right = b · varphidot_r
+tau_friction_left = b · varphidot_l
+tau_friction_pivot = b · varphidot_p
+
+
+Actions vector, CTC:
+
+u = kp(pd-p) + kv(pdotd-pdot) + pdotdot_d
+_________________________________________
+Controler
+
+    Actc = [zeros(3,3),eye(3,3); zeros(3,3), zeros(3,3)];
+    Bctc = [zeros(3,3);eye(3,3)];
+
+    EIG_set = [-2.3,-2.4,-2.5, -2.6, -2.7, -2.8]; % Desired eigenvalues
+
+    cp.K = place(Actc,Bctc,EIG_set);
+
+Poles // Eigvals
+   -2.3
+   -2.4
+   -2.5
+   -2.6
+   -2.7
+   -2.8
+
+Resulting Kmatrix:
+
+7.55999999999993	0	0	5.49999999999997	0	0
+0	5.99999999999997	0	0	4.89999999999999	0
+0	0	5.97999999999998	0	0	4.89999999999999
+
+
+
+__________________________________________
+
+opts = odeset('MaxStep',1e-3)
+
+h = 0.001;    % Number of samples within final vectors (times and states)
+
+__________________________________________
+Desired trajectory given by:
+
+% Set acceleration value
+a = 0.5; % [m/s^2]
+
+X = (1/6)*a*t^3;
+Y = 0;
+
+X_dot = 0.5*a*t^2;
+Y_dot = 0;
+
+X_dotdot = 0;
+Y_dotdot = 0;
+
+Alpha = 0;
+Alpha_dot = 0;
+Alpha_dotdot = 0;
+__________________________________________________________
+Initial Conditions
+
+p0 = [0,0,0]';
+varphi0 = [0,0,0]';
+
+pdot0 = zeros(3,1);
+
+% Need MIIK
+MIIKmat = sm.MIIKmatrix(p0(3),varphi0(3));
+
+% Computing p0
+varphidot0 = MIIKmat*pdot0;
+
+% Initial conditions for the system
+xs0=[p0; varphi0; pdot0; varphidot0];
+____________________________________________________________
+NO Disturbances
+___________________________________________________________
+Last Xerror value:
+Xerror increases over time

@@ -1,0 +1,35 @@
+Duration: 5 seconds
+
+Parameters:
+
+m.I_b = 409645.04*1e-9;   % Central moment of inertia of the chassis body about axis 3 [kg*m^2]
+m.I_p = 11262205.59*1e-9; % Central moment of inertia of the platform body about axis 3" [kg*m^2]
+m.I_a = 11262205.59*1e-9; % Axial moment of inertia of one wheel [kg*m^2]
+m.I_t = 11262205.59*1e-9; % Twisting moment of inertia of one wheel [kg*m^2]
+
+m.l_1 = 0.2; % Pivot offset relative to the wheels axis [m]
+m.l_2 = 0.1; % One half of the wheels separation [m]
+
+m.m_b = 0.59895; % Mass of the chassis base [kg]
+m.m_w = 0.41472; % Mass of one wheel [kg]
+m.m_p = 0.59895; % Mass of the platform [kg]
+
+m.x_G = 0; % x coord of the c.o.m. of the chassis body in the chassis frame [m]
+m.y_G = 0; % y coord of the c.o.m. of the chassis body in the chassis frame [m]
+
+m.x_F = 0; % x coord of the c.o.m. of the platform body in the platform frame [m]
+m.y_F = 0; % y coord of the c.o.m. of the platform body in the platform frame [m]
+
+m.r = 0.05;   % Wheel radius [m]
+
+
+
+Actions vector u of torques [Nm]:
+
+u=[0, 0, -0.1]
+
+__________________________________________
+
+opts = None
+
+h = 0.01;    % Number of samples within final vectors (times and states)

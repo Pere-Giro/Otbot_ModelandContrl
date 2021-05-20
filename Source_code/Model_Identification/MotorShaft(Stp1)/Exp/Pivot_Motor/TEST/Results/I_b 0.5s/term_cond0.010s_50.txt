@@ -1,0 +1,20 @@
+Method:  Solver: ode45; Search: lsqnonlin
+-------------------------------
+Termination Report
+-------------------------------
+WhyStop:  Change in cost was less than the specified tolerance.
+Iterations:  5
+FirstOrderOptimality:  4.6660e-05
+FcnCount:  6
+Algorithm:  trust-region-reflective
+-------------------------------
+OptionsUsed Report
+-------------------------------
+SearchMethod:  auto
+MaxIterations:  20
+StepTolerance:  1.0000e-06
+FunctionTolerance:  1.0000e-05
+-------------------------------
+Time to solve Report
+-------------------------------
+Elapsed time [s]:  2.2564

@@ -1,0 +1,105 @@
+Duration: 50 seconds
+
+Parameters:
+
+m.I_b = 1.06458;   % Central moment of inertia of the chassis body about axis 3 [kg*m^2]
+m.I_p = 2.22223; % Central moment of inertia of the platform body about axis 3" [kg*m^2]
+m.I_a = 1.03570*1e-2; % Axial moment of inertia of one wheel [kg*m^2]
+m.I_t = 5.61007*1e-3; % Twisting moment of inertia of one wheel [kg*m^2]
+
+m.l_1 = 0.25; % Pivot offset relative to the wheels axis [m]
+m.l_2 = 0.20; % One half of the wheels separation [m]
+
+m.m_b = 105.00; % Mass of the chassis base [kg]
+m.m_w = 2.0714; % Mass of one wheel [kg]
+m.m_p = 21.94795; % Mass of the platform [kg]
+
+m.x_G = 0; % x coord of the c.o.m. of the chassis body in the chassis frame [m]
+m.y_G = 0; % y coord of the c.o.m. of the chassis body in the chassis frame [m]
+
+m.x_F = 0; % x coord of the c.o.m. of the platform body in the platform frame [m]
+m.y_F = 0; % y coord of the c.o.m. of the platform body in the platform frame [m]
+
+m.r = 0.10;   % Wheel radius [m]
+
+m.b_frict = [0.18;0.18;0.18]; % Viscous friction coefficient [kg*m^2*s^-1]
+
+Friction modelled as:
+tau_friction_right = b · varphidot_r
+tau_friction_left = b · varphidot_l
+tau_friction_pivot = b · varphidot_p
+
+
+Actions vector, CTC:
+
+u = ki*integral(pd-p) + kp(pd-p) + kv(pdotd-pdot) + pdotdot_d
+_________________________________________
+Controler
+
+	Actc = [zeros(3,3),eye(3,3), zeros(3,3);
+                zeros(3,3), zeros(3,3), eye(3,3);
+                zeros(3,9)];
+        Bctc = [zeros(6,3);eye(3,3)];
+
+    EIG_set = [-0.2, -0.3, -0.4, -0.5, -0.6, -0.7, -0.8, -0.9, -1]; % Desired eigenvalues
+
+    cp.K = place(Actc,Bctc,EIG_set);
+
+Poles // Eigvals
+   -0.2
+   -0.3
+   -0.4
+   -0.5
+   -0.6
+   -0.7
+   -0.8
+   -0.9
+   -1
+
+Resulting Kmatrix:
+
+0.155906751241019	0.000303301593721307	0.0505003858312611	1.12165483517085	0.000945561385320387	0.160166169094178	1.96064260479296	0.000685161744823885	0.120492249092983
+0.000214104487769733	0.105005947535943	0.000859574565337932	0.00108378914558541	0.710022947291162	0.00327118127718826	0.000910607946549526	1.50002125226729	0.00298604644966321
+0.0440279957210510	0.000896322546180833	0.235926675560468	0.231893039680671	0.00339449049351532	1.19997624700843	0.199517233949440	0.00308004508855828	1.93933614293974
+
+
+
+__________________________________________
+
+opts = odeset('MaxStep',1e-3)
+
+h = 0.001;    % Number of samples within final vectors (times and states)
+
+__________________________________________
+Desired trajectory given by:
+
+X = sin(0.3*t);
+Y = cos(0.3*t) - 1;
+
+X_dot = 0.3*cos(0.3*t);
+Y_dot = -0.3*sin(0.3*t);
+
+X_dotdot = -0.3^2*sin(0.3*t);
+Y_dotdot = -0.3^2*cos(0.3*t);
+
+Alpha = 0;
+Alpha_dot = 0;
+Alpha_dotdot = 0;
+__________________________________________________________
+Initial Conditions
+
+p0 = [0,0,0]';
+varphi0 = [0,0,0]';
+
+pdot0 = zeros(3,1);
+
+% Need MIIK
+MIIKmat = sm.MIIKmatrix(p0(3),varphi0(3));
+
+% Computing p0
+varphidot0 = MIIKmat*pdot0;
+
+% Initial conditions for the system
+xs0=[p0; varphi0; pdot0; varphidot0];
+____________________________________________________________
+NO Disturbances

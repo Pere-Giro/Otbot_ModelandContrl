@@ -1,0 +1,94 @@
+Duration: 9.99 seconds
+
+Parameters:
+
+m.I_b = 1.06458;   % Central moment of inertia of the chassis body about axis 3 [kg*m^2]
+m.I_p = 2.22223; % Central moment of inertia of the platform body about axis 3" [kg*m^2]
+m.I_a = 1.03570*1e-2; % Axial moment of inertia of one wheel [kg*m^2]
+m.I_t = 5.61007*1e-3; % Twisting moment of inertia of one wheel [kg*m^2]
+
+m.l_1 = 0.25; % Pivot offset relative to the wheels axis [m]
+m.l_2 = 0.20; % One half of the wheels separation [m]
+
+m.m_b = 105.00; % Mass of the chassis base [kg]
+m.m_w = 2.0714; % Mass of one wheel [kg]
+m.m_p = 21.94795; % Mass of the platform [kg]
+
+m.x_G = 0; % x coord of the c.o.m. of the chassis body in the chassis frame [m]
+m.y_G = 0; % y coord of the c.o.m. of the chassis body in the chassis frame [m]
+
+m.x_F = 0; % x coord of the c.o.m. of the platform body in the platform frame [m]
+m.y_F = 0; % y coord of the c.o.m. of the platform body in the platform frame [m]
+
+m.r = 0.10;   % Wheel radius [m]
+
+m.b_frict = [0;0;0]; % Viscous friction coefficient [kg*m^2*s^-1]
+
+Friction modelled as:
+tau_friction_right = b · varphidot_r
+tau_friction_left = b · varphidot_l
+tau_friction_pivot = b · varphidot_p
+
+
+Actions vector, CTC:
+
+u = kp(pd-p) + kv(pdotd-pdot) + pdotdot_d
+_________________________________________
+Controler
+
+    Actc = [zeros(3,3),eye(3,3); zeros(3,3), zeros(3,3)];
+    Bctc = [zeros(3,3);eye(3,3)];
+
+    s1p = -4/3;
+    s2p = 10*s1p;
+
+    EIG_set = [s1p, s1p, s1p, s2p, s2p, s2p]; % Desired eigenvalues
+
+    cp.K = place(Actc,Bctc,EIG_set);
+
+Poles // Eigvals
+   -4/3
+   -4/3
+   -4/3
+   -40/3
+   -40/3
+   -40/3
+
+Resulting Kmatrix:
+
+17.7777777777778	0	0	14.6666666666667	0	0
+0	17.7777777777778	0	0	14.6666666666667	0
+0	0	17.7777777777778	0	0	14.6666666666667
+
+
+
+__________________________________________
+
+opts = odeset('MaxStep',1e-3)
+
+h = 0.001;    % Number of samples within final vectors (times and states)
+
+__________________________________________
+Desired trajectory given by:
+
+Maxime's Optimizer crowded corridor
+__________________________________________________________
+Initial Conditions
+
+p0 = [-11,0,0]';
+varphi0 = [0,0,0]';
+
+pdot0 = zeros(3,1);
+
+% Need MIIK
+MIIKmat = sm.MIIKmatrix(p0(3),varphi0(3));
+
+% Computing p0
+varphidot0 = MIIKmat*pdot0;
+
+% Initial conditions for the system
+xs0=[p0; varphi0; pdot0; varphidot0];
+____________________________________________________________
+Disturbances given by
+
+No disturbances

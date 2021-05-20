@@ -1,0 +1,17 @@
+Due to the fact that some of the name folders are too long, there has been made a naming equivalence. 
+So take into account that NFDNPFD == NFND
+
+Cte_T(#1,#2,#3) == Constant Torques of values #1 right wheel, #2 left wheel, #3 pivot joint
+
+SqSig == Square signal with duty cicle 50% and from the first parenthesis number to the second (fNumber,sNumber)
+
+SineSig#1_#2 == Sinusoidal signals of amplitude #1, with and offset of #2
+
+#DNoise == Data used has noise in # of 3 sampling data. 
+	DNoise --> The noise is result of the formula sdv = ND*sqrt(SR)
+
+#HNoise == Data used has noise in # of 3 sampling data. 
+	HNoise --> The noise is higher than the one obtined with the formula sdv = ND*sqrt(SR); sdvH = sdv + somevalue
+
+[# - #] == Are the periods of time of sampling and the zoh holding time respectiveliy
+	* If only 1 number inside [#] --> Equal periods of sampling
