@@ -1,4 +1,4 @@
-# Otbot_ModelandContrl
+# Otbot_project
 This is the work done during my intership in "Institut de Robòtica i Informàtica Industrial" from June 2020 to May 2021. The repository includes the pdf document of my thesis explaining in great detail all the work done along with all the Matlab code generated.
 
 # Otbot_models
