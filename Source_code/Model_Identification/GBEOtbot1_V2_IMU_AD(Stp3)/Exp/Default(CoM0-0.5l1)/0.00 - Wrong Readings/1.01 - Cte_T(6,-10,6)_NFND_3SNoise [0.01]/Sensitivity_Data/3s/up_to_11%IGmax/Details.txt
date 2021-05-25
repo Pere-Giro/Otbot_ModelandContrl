@@ -1,1 +1,0 @@
-Limit reached on 11% of de IGmax for a max of 20 iterations on nlgreyest

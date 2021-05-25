@@ -1,5 +1,0 @@
-Termination conditions explanation:
-
-FirstOrderOptimality --> ∞-norm of the gradient search vector when the search algorithm terminates.
-
-FcnCount --> Number of times the objective function was called.

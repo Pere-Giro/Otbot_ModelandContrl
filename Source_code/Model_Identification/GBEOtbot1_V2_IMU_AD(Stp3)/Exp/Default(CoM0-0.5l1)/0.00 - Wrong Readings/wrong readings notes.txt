@@ -1,3 +1,0 @@
-This experiments were carried out considering that, IMU gave us directly the linear accelerations in the base relative to the world, but that is wrong.
-
-The IMU will give us the accelerations in a base fix on the platform that rotates with it.
