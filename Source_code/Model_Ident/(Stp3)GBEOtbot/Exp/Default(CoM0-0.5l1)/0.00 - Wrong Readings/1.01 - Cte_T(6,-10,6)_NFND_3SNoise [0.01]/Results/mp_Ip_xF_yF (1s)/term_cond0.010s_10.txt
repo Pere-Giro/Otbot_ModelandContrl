@@ -1,0 +1,20 @@
+Method:  Solver: ode45; Search: lsqnonlin
+-------------------------------
+Termination Report
+-------------------------------
+WhyStop:  Maximum number of iterations or number of function evaluations reached.
+Iterations:  21
+FirstOrderOptimality:  4.2497e+04
+FcnCount:  22
+Algorithm:  trust-region-reflective
+-------------------------------
+OptionsUsed Report
+-------------------------------
+SearchMethod:  auto
+MaxIterations:  20
+StepTolerance:  1.0000e-06
+FunctionTolerance:  1.0000e-05
+-------------------------------
+Time to solve Report
+-------------------------------
+Elapsed time [s]:  8.9206
